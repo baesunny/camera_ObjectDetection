@@ -30,9 +30,15 @@
 ---
 
 **파이프라인 기획**
-1. yolo 인물 객체인식
-2. 상황별 안내 SOUND 지정 > TTS 활용
+1. yolo모델을 활용한 인물 객체인식
+2. 상황별 안내 SOUND 설정 > TTS 활용
    EX: 화면의 중앙 기준 왼쪽에 있으면 >> "현재 인물의 얼굴이 화면의 좌측에서 감지되었습니다."
    화면에 얼굴이 다 나오지 않았다면 >> "현재 인물의 얼굴이 화면 안에 다 들어오지 않았습니다. 휴대폰을 조금 더 왼쪽으로 이동하세요."
    ++ 얼굴 크게나오면 어캄? 이것도 안내해주면 좋을 듯.. >> " 현재 인물의 얼굴이 화면의 80% 이상을 차지하고 있습니다."
-3. 
+
+
+---
+**사용할만한 모델/코드정리**
+1. face detection
+   - https://machinelearningmastery.com/how-to-perform-face-detection-with-classical-and-deep-learning-methods-in-python-with-keras/
+   - 
