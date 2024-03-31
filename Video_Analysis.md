@@ -49,10 +49,12 @@
 2. keypoints tracking으로 포즈 감지 > 분류 (https://fritz.ai/computer-vision-from-image-to-video-analysis/)
 3. 취하지 않은 포즈를 순차적으로 안내멘트
    ex: 브이 포즈를 취한 것이 감지되었다 >> 다음 안내멘트는 "휴대폰을 들고있는 반대손의 엄지를 들어올려보세요."
-   >>.. 구리면안해도됨ㅋ
 
 ---
 
 **관련모델정리**
 1. object tracking
-2. 
+   Deep SORT: https://nanonets.com/blog/object-tracking-deepsort/#single-object-tracking
+2. 얼굴의 각도 구도 파악
+  https://suy379.tistory.com/92
+
