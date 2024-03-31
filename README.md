@@ -1,6 +1,10 @@
 ## BITAmin project (#2nd. Computer Vision)
 
 **주제 선정: 시각장애인을 위한 스마트폰 사진기 앱**
+  - **전체 파이프라인/방향성**
+    - https://www.figma.com/file/MsDkrxFuI04DjDSyjFTOh1/Untitled?type=whiteboard&node-id=0%3A1&t=yYXuY3KpLKQYLxBO-1
+
+
   - 세부 목표
     - 피사체가 시각장애인인 경우, 카메라 화면 프레임에 대상이 잘 들어와있는지 판단
     - 구도가 잘 나온 사진(인물 포토그래퍼의 사진)과 유사도를 분석하여 구도가 좋은지를 판단
@@ -40,8 +44,3 @@
    EX: 화면의 중앙 기준 왼쪽에 있으면 >> "현재 인물의 얼굴이 화면의 좌측에서 감지되었습니다. 얼굴이 화면의 중앙에 오기를 원하신다면 휴대폰을 시계방향으로 천천히 회전해주세요." >> (중앙에 오면) "현재 얼굴이 화면의 중간에 위치해있습니다"
    화면에 얼굴이 다 나오지 않았다면 >> "현재 인물의 얼굴이 화면 안에 다 들어오지 않았습니다. 휴대폰을 조금 더 왼쪽으로 이동하세요."
    ++ 얼굴 크게나오면 어캄? 이것도 안내해주면 좋을 듯.. >> " 현재 인물의 얼굴이 화면의 80% 이상을 차지하고 있습니다."
-
----
-
-전체 파이프라인/방향성
-https://www.figma.com/file/MsDkrxFuI04DjDSyjFTOh1/Untitled?type=whiteboard&node-id=0%3A1&t=yYXuY3KpLKQYLxBO-1
