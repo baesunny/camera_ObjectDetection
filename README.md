@@ -1,14 +1,11 @@
 ## BITAmin project (#2nd. Computer Vision)
 
 **주제 선정: 시각장애인을 위한 스마트폰 사진기 앱**
+
+
   - **전체 파이프라인/방향성**
     - https://www.figma.com/file/MsDkrxFuI04DjDSyjFTOh1/Untitled?type=whiteboard&node-id=0%3A1&t=yYXuY3KpLKQYLxBO-1
 
-
-  - 세부 목표
-    - 피사체가 시각장애인인 경우, 카메라 화면 프레임에 대상이 잘 들어와있는지 판단
-    - 구도가 잘 나온 사진(인물 포토그래퍼의 사진)과 유사도를 분석하여 구도가 좋은지를 판단
-    - 시각장애인도 스스로 사진을 찍고 sns에 사진을 올릴 수 있도록
 
 **생각해 볼 포인트**
 
