@@ -1,0 +1,5 @@
+윈도우 로컬에서 실행 
+conda 가상환경 : python >= 3.8
+pytorch >= 1.8
+pip install ultralytics 
+
