@@ -1,8 +1,9 @@
 ## BITAmin project (#2nd. Computer Vision)
 
 **주제 선정: 시각장애인을 위한 스마트폰 사진기 앱**
-
-
+  - **우리팀 공식 노션**
+    - https://www.notion.so/CV-project-e248f9c19dd14f88a07344623667360b?pvs=4
+      
   - **전체 파이프라인/방향성**
     - https://www.figma.com/file/MsDkrxFuI04DjDSyjFTOh1/Untitled?type=whiteboard&node-id=0%3A1&t=yYXuY3KpLKQYLxBO-1
 
