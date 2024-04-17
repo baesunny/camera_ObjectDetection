@@ -1,6 +1,6 @@
 ## BITAmin project (#2nd. Computer Vision)
 
-** ➡️ 주제 선정: 시각장애인을 위한 스마트폰 사진기 음성안내 애플리케이션**
+**➡️ 주제 선정: 시각장애인을 위한 스마트폰 사진기 음성안내 애플리케이션**
 
   - **Notion**
     - https://www.notion.so/CV-project-e248f9c19dd14f88a07344623667360b?pvs=4
