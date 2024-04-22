@@ -15,7 +15,10 @@ import cv2
 import mediapipe as mp
 import numpy as np
 
+##### TODO : 각도 임계값 및 인덱스(눈동자 방향 등) 조정 논의 후 수정 #####
+
 def head_Pose(image, face_mesh):
+    global text
     image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
     image.flags.writeable = False
     results = face_mesh.process(image)
