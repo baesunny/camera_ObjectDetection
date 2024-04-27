@@ -5,6 +5,8 @@ import cv2
 from ultralytics import YOLO
 from src.utils import intersection_over_union
 from src.elements import face_detect, head_Pose
+import pyttsx3
+engine = pyttsx3.init()
 
 # load Detection model & facemesh
 coco128 = open('./coco128.txt', 'r')
@@ -25,6 +27,7 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 CONFIDENCE_THRESHOLD = 0.8    # 최소 정확도 이하의 객체는 화면에 출력하지 않음
 iou_threshold = 0.9           # 유사도 IoU 기준
 stable_threshold_time = 1.0   # 움직임 안정 여부 시간(s) 기준
+pct_threshold = 30            # 얼굴 비중 안내 기준
 
 # constants
 GREEN = (0, 255, 0)       
@@ -66,10 +69,14 @@ while True:
 
                 # 요소 1 & 2 탐지 시작
                 pct, loc = face_detect(xmin,ymin,xmax,ymax,frame)
-                pct_text = f"object percentage: {pct}%"
+                if pct > pct_threshold: # TODO: 요소1 조건 조정
+                    pct_text = f"object percentage: {pct}%"
+                    cv2.putText(frame, pct_text, (20, 100), cv2.FONT_HERSHEY_SIMPLEX, 0.5, GREEN, 2)
                 loc_text = f"object location : {loc}"
-                cv2.putText(frame, pct_text, (20, 100), cv2.FONT_HERSHEY_SIMPLEX, 0.5, GREEN, 2)
                 cv2.putText(frame, loc_text, (20, 150), cv2.FONT_HERSHEY_SIMPLEX, 0.5, GREEN, 2)
+
+                engine.say(f"현재 얼굴 비중은 {pct}%이고 얼굴 위치는 {loc}이다.")
+                engine.runAndWait()
 
                 # 안내 완료 후 타이머 리셋
                 last_change_time = time.time() 
@@ -81,6 +88,7 @@ while True:
     ##### TODO : 요소3 안내 조건 조정 및 추가 #####
     #print(f"현재 얼굴 방향 :{headpose}")
     cv2.putText(frame, headpose, (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, GREEN, 2) # headpose 표시
+    #text_to_speech(f"현재 얼굴 방향은 {headpose}입니다.")
 
     # fps 계산
     end = time.time()
