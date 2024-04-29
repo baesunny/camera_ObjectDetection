@@ -50,15 +50,25 @@ y_scale = original_dim[1] / resize_dim[1]
 while True:
     start = time.time()
     success, frame = cap.read()
-    # 좌우 반전
-    frame = cv2.flip(frame, 1)
     
     if not success:
         print('Cam Error')
         break
-
+    
+    # Head pose estimation
+    headpose = head_Pose(image=frame, face_mesh=face_mesh)
+    # Left/Right Inversion
+    frame = cv2.flip(frame, 1)
+    # forward 뒤의 점 없애고 두 개의 상태 나타낼 때 띄어쓰기 넣음.
+    headpose = headpose.replace("forward.", "forward")
+    second_ind = headpose.find('looking', 10)
+    if second_ind != -1:
+        headpose = headpose[:second_ind] + " " +headpose[second_ind:]
+    
+    cv2.putText(frame, headpose, (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, GREEN, 2)
+    
+    # Convert resized frame to tensor and move to the same device as the model
     frame_resized = cv2.resize(frame, (640, 640))
-    # Convert frame to tensor and move to the same device as the model
     frame_tensor = F.to_tensor(frame_resized).unsqueeze(0).to(device)
     
     # Make predictions
@@ -82,11 +92,7 @@ while True:
         # Update and check your tracking and change detection logic here
 
     count += 1
-
-    # Head pose estimation
-    headpose = head_Pose(image=frame, face_mesh=face_mesh)
-    cv2.putText(frame, headpose, (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, GREEN, 2)
-
+    
     # FPS calculation
     end = time.time()
     totalTime = (end - start)
