@@ -1,0 +1,12 @@
+names:
+- PEOPLE
+nc: 1
+test: "C:\\Users\\baseoki\\OneDrive\\\uBC14\uD0D5 \uD654\uBA74\\\uD504\uB85C\uC81D\
+  \uD2B8\\camera_ObjectDetection\\custom_dataset\\1\uBC88\uB370\uC774\uD130_cropped\\\
+  FACE DETECTION.v3i.yolov8\\test"
+train: "C:\\Users\\baseoki\\OneDrive\\\uBC14\uD0D5 \uD654\uBA74\\\uD504\uB85C\uC81D\
+  \uD2B8\\camera_ObjectDetection\\custom_dataset\\1\uBC88\uB370\uC774\uD130_cropped\\\
+  FACE DETECTION.v3i.yolov8\\train\\images"
+val: "C:\\Users\\baseoki\\OneDrive\\\uBC14\uD0D5 \uD654\uBA74\\\uD504\uB85C\uC81D\uD2B8\
+  \\camera_ObjectDetection\\custom_dataset\\1\uBC88\uB370\uC774\uD130_cropped\\FACE\
+  \ DETECTION.v3i.yolov8\\valid"

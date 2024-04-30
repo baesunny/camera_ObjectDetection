@@ -17,12 +17,13 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(f"Using device: {device}")
 
 # Load Detection model & facemesh
-coco128 = open('camera_ObjectDetection\yolov8\coco128.txt', 'r')
-data = coco128.read()
-class_list = data.split('\n')
-coco128.close()
+# coco128 = open('camera_ObjectDetection\yolov8\coco128.txt', 'r')
+# data = coco128.read()
+# class_list = data.split('\n')
+# coco128.close()
+class_list = ['face']
 
-model = YOLO('yolov8/yolov8s.pt')
+model = YOLO(r'C:\Users\baseoki\OneDrive\바탕 화면\프로젝트\camera_ObjectDetection\custom_dataset 학습 코드\runs\detect\에포크 100 patience 10\weights\best.pt')
 model.to(device)  # Use the device set above
 
 mp_face_mesh = mp.solutions.face_mesh
