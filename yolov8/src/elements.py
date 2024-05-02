@@ -29,6 +29,7 @@ def head_Pose(image, face_mesh):
     face_3d = []
     face_2d = []
 
+    text = "No face detected"
     if results.multi_face_landmarks:
         for face_landmarks in results.multi_face_landmarks:
             for idx, lm in enumerate(face_landmarks.landmark):
@@ -75,15 +76,14 @@ def head_Pose(image, face_mesh):
             elif y > 5:
                 text_1 = f"looking right {round(y,1)}"
             else:
-                text_1 = f"looking forward."
+                text_1 = f"looking forward"
 
             if x < -3:
                 text_2 = f"looking down {round(x,1)}"
             elif x > 5:
                 text_2 = f"looking up {round(x,1)}"
             else:
-                text_2 = " "
+                text_2 = ""
 
-            text = text_1 + text_2
+            text = text_1 + " " + text_2
     return text
-

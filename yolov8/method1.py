@@ -18,7 +18,7 @@ print(f"Using device: {device}")
 # coco128.close()
 class_list = ['face']
 
-model = YOLO(r'C:\Users\baseoki\OneDrive\바탕 화면\프로젝트\camera_ObjectDetection\custom_dataset 학습 코드\runs\detect\에포크 100 patience 10\weights\best.pt')
+model = YOLO(r'C:\Users\baseoki\OneDrive\바탕 화면\프로젝트\camera_ObjectDetection\custom_dataset 학습 코드 YOLO\runs\detect\에포크 100 patience 10\weights\best.pt')
 model.to(device)
 mp_face_mesh = mp.solutions.face_mesh
 face_mesh = mp_face_mesh.FaceMesh(min_detection_confidence=0.5, min_tracking_confidence=0.5)
@@ -29,7 +29,7 @@ cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
 # Hyperparameter setting
-CONFIDENCE_THRESHOLD = 0.8
+CONFIDENCE_THRESHOLD = 0.6
 
 # Constants
 GREEN = (0, 255, 0)
@@ -60,12 +60,6 @@ while True:
     headpose = head_Pose(image=frame, face_mesh=face_mesh)
     # Left/Right Inversion
     frame = cv2.flip(frame, 1)
-    # forward 뒤의 점 없애고 두 개의 상태 나타낼 때 띄어쓰기 넣음.
-    headpose = headpose.replace("forward.", "forward")
-    second_ind = headpose.find('looking', 10)
-    if second_ind != -1:
-        headpose = headpose[:second_ind] + " " +headpose[second_ind:]
-    
     cv2.putText(frame, headpose, (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, GREEN, 2)
     
     # Convert resized frame to tensor and move to the same device as the model
