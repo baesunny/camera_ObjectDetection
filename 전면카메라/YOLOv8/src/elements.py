@@ -19,11 +19,10 @@ import numpy as np
 
 def head_Pose(image, face_mesh):
     global text
-    image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
+    image = cv2.flip(image, 1)
     image.flags.writeable = False
     results = face_mesh.process(image)
     image.flags.writeable = True
-    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     
     img_h, img_w = image.shape[0], image.shape[1]
     face_3d = []
