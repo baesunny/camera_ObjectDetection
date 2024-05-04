@@ -1,0 +1,5 @@
+python >= 3.8
+pytorch >= 1.8
+ultralytics 
+mediapipe==0.10.10
+
