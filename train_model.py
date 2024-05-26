@@ -7,7 +7,7 @@ model = YOLO('yolov8n.pt', task='detect')
 model.train(data='coco8.yaml', epochs=30, lr0=0.05)
 
 # Save the trained model
-model_path = r"C:\Users\soeon\runs\detect"
+model_path = r"Edit path"
 model.save(model_path)
 
 model = YOLO(model_path)
