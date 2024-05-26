@@ -3,6 +3,8 @@ from ultralytics import YOLO
 import numpy as np
 import albumentations as A
 import time
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
+from sklearn.model_selection import train_test_split
 
 # def to improve frame
 def improve_frame(frame):
@@ -36,6 +38,13 @@ def identify_grid_loc(xmin, ymin, xmax, ymax, width, height):
         row = 'Bottom'
     
     return f"{row}-{col}"
+
+def calculate_metrics(true_labels, pred_labels):
+    accuracy = accuracy_score(true_labels, pred_labels)
+    f1 = f1_score(true_labels, pred_labels, average='weighted')
+    precision = precision_score(true_labels, pred_labels, average='weighted')
+    recall = recall_score(true_labels, pred_labels, average='weighted')
+    return accuracy, f1, precision, recall
     
 # Function for real-time detection
 def run_real_time_detection():
@@ -68,6 +77,9 @@ def run_real_time_detection():
         # Calculate FPS
         fps = 1/(new_frame_time - prev_frame_time)
         prev_frame_time = new_frame_time
+        
+        true_labels = []
+        pred_labels = []
 
         # Extract bounding boxes, labels, and scores
         for result in results:
@@ -90,8 +102,14 @@ def run_real_time_detection():
                     cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (255, 0, 0), 2)
                     cv2.putText(frame, f"{label_name}: {score:.2f} ({grid_location})", (xmin, ymin - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 0, 0), 2)
                     
-                    # Print out Confidence Score
+                    # Append the true and predicted labels
+                    true_labels.append(label_name)
+                    pred_labels.append(label_name)  # This should be the actual predicted label
+
+                    
+                    # Print out Confidence Score and loc
                     print(f"{label_name}: {score:.2f}")
+                    print(f"{label_name}: {grid_location}")
                     
         # Display Grid on Frame
         gridColor = (0, 0, 255)
@@ -112,6 +130,11 @@ def run_real_time_detection():
         # Break loop on 'q' key press
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+        
+        if true_labels and pred_labels:
+            accuracy, f1, precision, recall = calculate_metrics(true_labels, pred_labels)
+            print(f"Accuracy: {accuracy:.2f}, F1 Score: {f1:.2f}, Precision: {precision:.2f}, Recall: {recall:.2f}")
+
 
     # Release the capture and close windows
     cap.release()
