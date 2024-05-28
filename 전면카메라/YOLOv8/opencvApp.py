@@ -5,7 +5,7 @@ from ultralytics import YOLO
 
 import streamlit as st
 import numpy as np
-import tempfile
+#import tempfile
 
 original_dim = (1280, 720)
 resize_dim = (640, 640)
