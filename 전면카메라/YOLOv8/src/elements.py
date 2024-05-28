@@ -27,7 +27,7 @@ def head_Pose(image, face_mesh):
     img_h, img_w = image.shape[0], image.shape[1]
     face_3d = []
     face_2d = []
-
+    text = "no face detected"
     if results.multi_face_landmarks:
         for face_landmarks in results.multi_face_landmarks:
             for idx, lm in enumerate(face_landmarks.landmark):
