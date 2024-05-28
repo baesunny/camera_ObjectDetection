@@ -5,7 +5,6 @@ import torch
 import albumentations as A
 import time
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
-from sklearn.model_selection import train_test_split
 
 # Check if CUDA is available and set the device accordingly
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -109,9 +108,6 @@ def run_real_time_detection():
                     cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (255, 0, 0), 2)
                     cv2.putText(frame, f"{label_name}: {score:.2f} ({grid_location})", (xmin, ymin - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 0, 0), 2)
                     
-                    # Append the true and predicted labels
-                    true_labels.append(label_name)
-                    pred_labels.append(label_name)  # This should be the actual predicted label
 
                     
                     # Print out Confidence Score and loc
@@ -137,10 +133,6 @@ def run_real_time_detection():
         # Break loop on 'q' key press
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-        
-        if true_labels and pred_labels:
-            accuracy, f1, precision, recall = calculate_metrics(true_labels, pred_labels)
-            print(f"Accuracy: {accuracy:.2f}, F1 Score: {f1:.2f}, Precision: {precision:.2f}, Recall: {recall:.2f}")
 
 
     # Release the capture and close windows
