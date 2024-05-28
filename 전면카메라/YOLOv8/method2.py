@@ -10,6 +10,7 @@ from src.elements import face_detect, head_Pose
 import pyttsx3
 import threading
 engine = pyttsx3.init()
+
 def speak(text):
     engine.say(text)
     engine.runAndWait()
@@ -24,7 +25,7 @@ data = coco128.read()
 class_list = data.split('\n')
 coco128.close()
 
-model = YOLO('./yolov8s.pt')
+model = YOLO('./best.pt')
 model.to(device)
 
 mp_face_mesh = mp.solutions.face_mesh
