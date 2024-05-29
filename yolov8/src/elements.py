@@ -1,5 +1,5 @@
 # 요소1[pct] & 요소2[loc]
-def face_detect(xmin,ymin,xmax,ymax,frame):
+def detect(xmin,ymin,xmax,ymax,frame):
     # 요소1[pct]
     bbox = (xmax-xmin)*(ymax-ymin)
     pct = round(100 * bbox / (frame.shape[0]*frame.shape[1]))
@@ -87,3 +87,10 @@ def head_Pose(image, face_mesh):
 
             text = text_1 + " " + text_2
     return text
+
+def box_to_pct(boxes, width, height):
+    pct = []
+    for box in boxes:
+        xmin, ymin, xmax, ymax = map(int, box)
+        pct.append((xmax-xmin)*(ymax-ymin)/(width*height)*100)
+    return pct

@@ -4,7 +4,7 @@ import mediapipe as mp
 import cv2
 from ultralytics import YOLO
 from src.utils import intersection_over_union
-from src.elements import face_detect, head_Pose
+from src.elements import detect, head_Pose
 import torch
 from torchvision.transforms import functional as F 
 
@@ -21,15 +21,10 @@ def speak(text):
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(f"Using device: {device}")
 
-# Load Detection model & facemesh
-# coco128 = open('camera_ObjectDetection\yolov8\coco128.txt', 'r')
-# data = coco128.read()
-# class_list = data.split('\n')
-# coco128.close()
-class_list = ['face']
-
-model = YOLO(r'C:\Users\baseoki\Downloads\train6.pt')
+model = YOLO(r'C:\Users\baseoki\Downloads\train12.pt')
 model.to(device)  # Use the device set above
+
+class_list = ['face']
 
 mp_face_mesh = mp.solutions.face_mesh
 face_mesh = mp_face_mesh.FaceMesh(min_detection_confidence=0.5, min_tracking_confidence=0.5)
@@ -43,7 +38,6 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 CONFIDENCE_THRESHOLD = 0.5
 iou_threshold = 0.7
 stable_threshold_time = 1.7
-pct_threshold = 10
 
 # Constants
 GREEN = (0, 255, 0)
@@ -114,12 +108,9 @@ while True:
             if iou < iou_threshold:
                 last_change_time = time.time()
                 state_loc_variable = 1
- 
-                # voice_assistant.shutdown()
             elif (time.time() - last_change_time) > stable_threshold_time and state_loc_variable == 1:
-                pct, loc = face_detect(xmin, ymin, xmax, ymax, frame)
-                #if pct > pct_threshold:
-                text = f"현재 얼굴 비중은 {pct}%이고 얼굴 위치는 {loc}입니다."
+                pct, loc = detect(xmin, ymin, xmax, ymax, frame)
+                text = f"현재 얼굴 비중은 {pct}%이고 위치는 {loc}입니다."
                 threading.Thread(target=speak, args=(text,)).start()
                 last_change_time = time.time()
                 state_loc_variable = 0

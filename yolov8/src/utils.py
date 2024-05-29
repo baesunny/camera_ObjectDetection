@@ -28,3 +28,34 @@ def distance(boxA, boxB):
     # distance : 유클리드 거리의 제곱
     distance = (center_A_x-center_B_x)^2 + (center_A_y-center_B_y)^2
     return distance
+
+def iou_multiple(boxesA, boxesB):
+    possible_idx_dict={}
+    possible_idx_dict[(1,1)] = [[0]]
+    possible_idx_dict[(2,1)] = [[0], [1]]
+    possible_idx_dict[(2,2)] = [[0,1], [1,0]]
+    possible_idx_dict[(3,1)] = [[0], [1], [2]]
+    possible_idx_dict[(3,2)] = [[0,1], [0,2], [1,0], [1,2], [2,0], [2,1]]
+    possible_idx_dict[(3,3)] = [[0,1,2], [0,2,1], [1,0,2], [1,2,0], [2,0,1], [2,1,0]]
+    
+    iou_total_list = []
+    lenA = len(boxesA)
+    lenB = len(boxesB)
+    
+    if lenB > lenA:
+        lenA, lenB = lenB, lenA
+        boxesA, boxesB = boxesB, boxesA
+    
+    for i in possible_idx_dict[(lenA, lenB)]:
+        iou_list=[]
+        for j in range(lenB):
+            if boxesB[j][-1] == boxesA[i[j]][-1]:
+                iou_list.append(intersection_over_union(boxesB[j][:-1], boxesA[i[j]][:-1]))
+            else:
+                iou_list.append(0)
+        iou_total_list.append(sum(iou_list)/len(iou_list))
+    return max(iou_total_list)
+
+# boxesA=[[0,0,2,2,4],[0,0,3,3,1],[4,4,5,5,4]]
+# boxesB=[[1,1,2,2,1],[0,0,1,2,4], [4,4,5,5,4]]
+# print(iou_multiple(boxesA, boxesB))
