@@ -1,11 +1,11 @@
-import logging
+# import logging
 
-# 기존 핸들러 제거
-for handler in logging.root.handlers[:]:
-    logging.root.removeHandler(handler)
+# # 기존 핸들러 제거
+# for handler in logging.root.handlers[:]:
+#     logging.root.removeHandler(handler)
 
-# 로그 설정 초기화
-logging.basicConfig(level=logging.ERROR)
+# # 로그 설정 초기화
+# logging.basicConfig(level=logging.ERROR)
 
 import cv2
 from ultralytics import YOLO
