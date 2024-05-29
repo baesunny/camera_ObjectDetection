@@ -93,7 +93,7 @@ while True:
     
         for idx, box in enumerate(boxes):
             xmin, ymin, xmax, ymax = map(int, box)
-            new_bboxes.append([xmin, ymin, xmax, ymax, labels[idx]])
+            new_bboxes.append([xmin, ymin, xmax, ymax, labels[idx], pcts[idx]])
     
     # Display Grid on Frame
     gridColor = WHITE

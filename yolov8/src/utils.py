@@ -31,6 +31,7 @@ def distance(boxA, boxB):
 
 def iou_multiple(boxesA, boxesB):
     possible_idx_dict={}
+    possible_idx_dict[(1,0)] = [[]]
     possible_idx_dict[(1,1)] = [[0]]
     possible_idx_dict[(2,1)] = [[0], [1]]
     possible_idx_dict[(2,2)] = [[0,1], [1,0]]
@@ -41,21 +42,47 @@ def iou_multiple(boxesA, boxesB):
     iou_total_list = []
     lenA = len(boxesA)
     lenB = len(boxesB)
+    iou_store = []
     
     if lenB > lenA:
         lenA, lenB = lenB, lenA
         boxesA, boxesB = boxesB, boxesA
     
+    pct_sum = sum(sublist[-1] for sublist in boxesA) + sum(sublist[-1] for sublist in boxesB)
+    
     for i in possible_idx_dict[(lenA, lenB)]:
         iou_list=[]
-        for j in range(lenB):
-            if boxesB[j][-1] == boxesA[i[j]][-1]:
-                iou_list.append(intersection_over_union(boxesB[j][:-1], boxesA[i[j]][:-1]))
-            else:
-                iou_list.append(0)
+        if lenB == 0:
+            iou_list.append(0)
+        else:
+            for j in range(lenB):
+                if boxesB[j][-2] == boxesA[i[j]][-2]:
+                    iou_list.append(intersection_over_union(boxesB[j][:-1], boxesA[i[j]][:-1]))
+                else:
+                    iou_list.append(0)
         iou_total_list.append(sum(iou_list)/len(iou_list))
-    return max(iou_total_list)
+        iou_store.append(iou_list)
+        
+    max_index = iou_total_list.index(max(iou_total_list))
+    cal_index_oreder = possible_idx_dict[(lenA, lenB)][max_index]
 
-# boxesA=[[0,0,2,2,4],[0,0,3,3,1],[4,4,5,5,4]]
-# boxesB=[[1,1,2,2,1],[0,0,1,2,4], [4,4,5,5,4]]
+    iouA, iouB = [], []
+    for i in range(lenA):
+        if i not in cal_index_oreder:
+            iouA.append([0, boxesA[i][-1]])
+        else:
+            iouA.append([iou_store[max_index][cal_index_oreder.index(i)], boxesA[i][-1]])
+    for i in range(lenB):
+        iouB.append([iou_store[max_index][i], boxesB[i][-1]])
+    
+    weighted_iou = 0
+    for iou, pct in iouA:
+        weighted_iou += pct/pct_sum*iou
+    for iou, pct in iouB:
+        weighted_iou += pct/pct_sum*iou
+    # return max(iou_total_list), weighted_iou
+    return weighted_iou
+
+# boxesA=[[0,0,5,5,4,50],[0,0,3,3,1,18], [0,0,1,3,2,6]]
+# boxesB=[[0,0,2,2,1,9], [0,0,1,3,4,6]]
 # print(iou_multiple(boxesA, boxesB))
