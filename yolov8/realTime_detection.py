@@ -7,14 +7,12 @@
 # # 로그 설정 초기화
 # logging.basicConfig(level=logging.ERROR)
 
-import cv2
-from ultralytics import YOLO
-import numpy as np
-import time
-from sklearn.model_selection import train_test_split
 from src.elements import detect, box_to_pct
 from src.utils import iou_multiple
+from ultralytics import YOLO
 import torch
+import cv2
+import time
 
 import pyttsx3
 import threading
@@ -60,9 +58,6 @@ BLUE = (0, 0, 255)
 last_change_time = time.time()
 last_bboxes = None
 detection = None
-
-# Debugging
-key=0
 
 # 말을 한번만 하기 위해서 상태를 나타내는 변수 도입 -> 1일 때만 말해줄거야
 state_loc_variable = 1
@@ -170,11 +165,7 @@ while True:
     
     cv2.putText(frame, fps, (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, BLUE, 2)
     cv2.imshow('Real-time YOLO Detection', frame)
-    
-    # key+=1
-    # if key == 50:
-    #     break
-    # Break loop on 'q' key press
+
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
