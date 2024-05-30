@@ -29,15 +29,37 @@ def distance(boxA, boxB):
     distance = (center_A_x-center_B_x)^2 + (center_A_y-center_B_y)^2
     return distance
 
+def make_dict(a):
+    dict = {}
+    for i in range(1, a+1):
+        for j in range(i+1):
+            if j == 0:
+                li = [[]]
+                dict[(i,j)] = li
+            elif j == 1:
+                li = [[k] for k in range(i)]
+                dict[(i,j)] = li
+            else :
+                cnt = 0
+                li = [[k] for k in range(i)]
+                can = [k for k in range(i)]
+                while cnt < (i)*(j):
+                    node = li.pop(0)
+                    if len(node) == j:
+                        cnt+=1
+                        li.append(node)
+                    else :
+                        for num in can:
+                            if num not in node:
+                                new_node = node.copy()
+                                new_node.append(num)
+                                li.append(new_node)
+                dict[(i,j)] = sorted(li)
+    return dict
+
 def iou_multiple(boxesA, boxesB):
-    possible_idx_dict={}
-    possible_idx_dict[(1,0)] = [[]]
-    possible_idx_dict[(1,1)] = [[0]]
-    possible_idx_dict[(2,1)] = [[0], [1]]
-    possible_idx_dict[(2,2)] = [[0,1], [1,0]]
-    possible_idx_dict[(3,1)] = [[0], [1], [2]]
-    possible_idx_dict[(3,2)] = [[0,1], [0,2], [1,0], [1,2], [2,0], [2,1]]
-    possible_idx_dict[(3,3)] = [[0,1,2], [0,2,1], [1,0,2], [1,2,0], [2,0,1], [2,1,0]]
+    view_threshold = 3
+    possible_idx_dict=make_dict(view_threshold)
     
     iou_total_list = []
     lenA = len(boxesA)
