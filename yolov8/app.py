@@ -15,7 +15,10 @@ class VideoProcessor(VideoProcessorBase):
 def main():
     st.title("사진 찍기 앱")
     
-    ctx = webrtc_streamer(key="example", video_processor_factory=VideoProcessor)
+    ctx = webrtc_streamer(key="example", video_processor_factory=VideoProcessor, media_stream_constraints={
+        "video": True,
+        "audio": False,
+    })
     
     if st.button("사진 찍기"):
         if ctx.video_processor:

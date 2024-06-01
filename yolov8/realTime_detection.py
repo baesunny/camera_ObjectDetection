@@ -48,7 +48,7 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 # Hyperparameter setting
 CONFIDENCE_THRESHOLD = 0.5
 iou_threshold = 0.7
-stable_threshold_time = 1.7
+stable_threshold_time = 1.0
 
 # Constants
 GREEN = (0, 255, 0)

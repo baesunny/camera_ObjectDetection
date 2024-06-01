@@ -26,18 +26,17 @@ model.to(device)  # Use the device set above
 
 class_list = ['face']
 
-mp_face_mesh = mp.solutions.face_mesh
-face_mesh = mp_face_mesh.FaceMesh(min_detection_confidence=0.5, min_tracking_confidence=0.5)
-
 # Camera setting
 cap = cv2.VideoCapture(0)
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+width, height = 1280, 720
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 
 # Hyperparameter setting
-CONFIDENCE_THRESHOLD = 0.5
-iou_threshold = 0.7
-stable_threshold_time = 1.7
+CONFIDENCE_THRESHOLD = 0.3
+iou_threshold = 0.8
+stable_threshold_time = 0.8
+box_threshold = 5
 
 # Constants
 GREEN = (0, 255, 0)
@@ -49,19 +48,25 @@ last_bbox = None
 max_area = 0
 max_box = None
 
-original_dim = (1280, 720)
+mp_face_mesh = mp.solutions.face_mesh
+face_mesh = mp_face_mesh.FaceMesh(min_detection_confidence=CONFIDENCE_THRESHOLD, min_tracking_confidence=CONFIDENCE_THRESHOLD)
+
+original_dim = (width, height)
 resize_dim = (640, 640)
 # Scale factors for coordinates
 x_scale = original_dim[0] / resize_dim[0]
 y_scale = original_dim[1] / resize_dim[1]
-
+print(x_scale, y_scale)
 # 말을 한번만 하기 위해서 상태를 나타내는 변수 도입 -> 1일 때만 말해줄거야
 state_loc_variable = 1
+num_frame = 0
 
 # Detection loop
 while True:
     start = time.time()
     success, frame = cap.read()
+    num_frame+=1 
+    print("num_frame:", num_frame)
     
     if not success:
         print('Cam Error')
@@ -105,6 +110,7 @@ while True:
 
         if last_bbox is not None:
             iou = intersection_over_union(last_bbox, new_bbox)
+            print(iou)
             if iou < iou_threshold:
                 last_change_time = time.time()
                 state_loc_variable = 1
@@ -115,7 +121,8 @@ while True:
                 last_change_time = time.time()
                 state_loc_variable = 0
 
-        last_bbox = new_bbox
+        if num_frame % box_threshold == 0:
+            last_bbox = new_bbox
     
     max_area = 0
     max_box = None
