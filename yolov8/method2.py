@@ -21,7 +21,7 @@ def speak(text):
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(f"Using device: {device}")
 
-model = YOLO(r'C:\Users\baseoki\Downloads\train12.pt')
+model = YOLO(r'C:\Users\baseoki\Downloads\train17-최종.pt')
 model.to(device)  # Use the device set above
 
 class_list = ['face']
