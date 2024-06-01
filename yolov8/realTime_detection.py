@@ -85,7 +85,7 @@ while True:
             labels = data.boxes.cls.cpu().numpy()  # Extract class labels
             pcts = box_to_pct(boxes, width, height)
         # Combine all detections into a single list, and Sort by Confidence Score
-        detections = sorted(zip(boxes, confs, labels, pcts), key=lambda x: x[3], reverse=True)
+        detections = sorted(zip(boxes, confs, labels, pcts), key=lambda x: x[1], reverse=True)
         
         if len(detections) >= 4:
             detections = detections[:3]
