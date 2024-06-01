@@ -78,9 +78,9 @@ def head_Pose(image, face_mesh):
             else:
                 text_1 = f"looking forward"
 
-            if x < -3:
+            if x < -3.5:
                 text_2 = f"looking down {round(x,1)}"
-            elif x > 5:
+            elif x > 4:
                 text_2 = f"looking up {round(x,1)}"
             else:
                 text_2 = ""

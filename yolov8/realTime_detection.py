@@ -46,10 +46,11 @@ cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 
 # Hyperparameter setting
-CONFIDENCE_THRESHOLD = 0.5
-iou_threshold = 0.7
+CONFIDENCE_THRESHOLD = 0.6
+iou_threshold = 0.8
+box_threshold = 10 # FPS 고려
 stable_threshold_time = 1.0
-change_threshold_time = 1.0
+change_threshold_time = 0.5
 
 # Constants
 GREEN = (0, 255, 0)
@@ -57,15 +58,21 @@ WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
 
 last_change_time = time.time()
+last_stable_time = time.time()
 last_bboxes = None
 detection = None
 
 # 말을 한번만 하기 위해서 상태를 나타내는 변수 도입 -> 1일 때만 말해줄거야
 state_loc_variable = 1
+num_frame = 0
+# 변화 상태를 나타내는 변수
+change_variable = 0
 
 while True:
     start = time.time()
     success, frame = cap.read()
+    num_frame += 1
+    
     if not success:
         print('Cam Error')
         break
@@ -115,8 +122,16 @@ while True:
            
             if iou < iou_threshold:
                 last_change_time = time.time()
-                state_loc_variable = 1
-            elif (time.time() - last_change_time) > stable_threshold_time and state_loc_variable == 1:
+                if change_variable == 0:
+                    change_variable = 1
+                else:
+                    if last_change_time - last_stable_time > change_threshold_time:
+                        state_loc_variable = 1
+            elif change_variable == 1:
+                last_stable_time = time.time()
+                change_variable = 0
+                
+            if (time.time() - last_change_time) > stable_threshold_time and state_loc_variable == 1:
                 box, conf, label, pct = detections[0]
                 xmin, ymin, xmax, ymax = map(int, box)
                 label_name_korean = class_list_korean[int(label)]
@@ -124,7 +139,7 @@ while True:
                 pct, loc = detect(xmin, ymin, xmax, ymax, frame)
                 text = f"현재 {label_name_korean}의 비중은 {pct}%이고 위치는 {loc}입니다."
                 threading.Thread(target=speak, args=(text,)).start()
-                last_change_time = time.time()
+                last_stable_time = time.time()
                 state_loc_variable = 0
     
     elif len(detections) > 1:
@@ -140,8 +155,16 @@ while True:
             
             if iou < iou_threshold:
                 last_change_time = time.time()
-                state_loc_variable = 1
-            elif (time.time() - last_change_time) > stable_threshold_time and state_loc_variable == 1:
+                if change_variable == 0:
+                    change_variable = 1
+                else:
+                    if last_change_time - last_stable_time > change_threshold_time:
+                        state_loc_variable = 1
+            elif change_variable == 1:
+                last_stable_time = time.time()
+                change_variable = 0
+                
+            if (time.time() - last_change_time) > stable_threshold_time and state_loc_variable == 1:
                 text="현재"
                 for j in detections:
                     box, conf, label, pct = j
@@ -151,11 +174,12 @@ while True:
                     pct, loc = detect(xmin, ymin, xmax, ymax, frame)
                     text += f" {label_name_korean}의 위치는 {loc}입니다."
                 threading.Thread(target=speak, args=(text,)).start()
-                last_change_time = time.time()
+                last_stable_time = time.time()
                 state_loc_variable = 0
     
-    if new_bboxes:
-        last_bboxes = new_bboxes       
+    if new_bboxes and num_frame % box_threshold == 0:
+        if not (change_variable == 1 and state_loc_variable == 0):
+            last_bboxes = new_bboxes
             
     # FPS calculation
     end = time.time()
