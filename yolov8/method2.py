@@ -35,8 +35,9 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 # Hyperparameter setting
 CONFIDENCE_THRESHOLD = 0.3
 iou_threshold = 0.8
-stable_threshold_time = 0.8
 box_threshold = 5
+stable_threshold_time = 0.8
+
 
 # Constants
 GREEN = (0, 255, 0)
@@ -66,7 +67,6 @@ while True:
     start = time.time()
     success, frame = cap.read()
     num_frame+=1 
-    print("num_frame:", num_frame)
     
     if not success:
         print('Cam Error')
