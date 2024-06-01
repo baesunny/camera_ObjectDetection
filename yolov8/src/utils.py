@@ -57,8 +57,7 @@ def make_dict(a):
                 dict[(i,j)] = sorted(li)
     return dict
 
-def iou_multiple(boxesA, boxesB):
-    view_threshold = 3
+def iou_multiple(boxesA, boxesB, view_threshold=3):
     possible_idx_dict=make_dict(view_threshold)
     
     iou_total_list = []
