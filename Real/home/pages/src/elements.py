@@ -1,4 +1,3 @@
-# 요소1[pct] & 요소2[loc]
 def detect(xmin,ymin,xmax,ymax,frame):
     # 요소1[pct]
     bbox = (xmax-xmin)*(ymax-ymin)
@@ -10,12 +9,9 @@ def detect(xmin,ymin,xmax,ymax,frame):
     loc = localdic[int(x_center/frame.shape[1]*3)+3*int(y_center/frame.shape[0]*3)]
     return pct,loc
 
-# 요소3[angle]
 import cv2
 import mediapipe as mp
 import numpy as np
-
-##### TODO : 각도 임계값 및 인덱스(눈동자 방향 등) 조정 논의 후 수정 #####
 
 def head_Pose(image, face_mesh):
     global text
@@ -72,16 +68,20 @@ def head_Pose(image, face_mesh):
 
             # See where the user's head tilting
             if y < -5:
-                text_1 = f"looking left {round(y,1)}"
+                #text_1 = f"looking left {round(y,1)}"
+                text_1 = f"왼쪽 응시중입니다."
             elif y > 5:
-                text_1 = f"looking right {round(y,1)}"
+                #text_1 = f"looking right {round(y,1)}"
+                text_1 = f"오른쪽 응시중입니다."
             else:
-                text_1 = f"looking forward"
+                text_1 = f"정면 응시중입니다."
 
             if x < -3.5:
-                text_2 = f"looking down {round(x,1)}"
+                #text_2 = f"looking down {round(x,1)}"
+                text_2 = f"아래쪽 응시중입니다."
             elif x > 4:
-                text_2 = f"looking up {round(x,1)}"
+                #text_2 = f"looking up {round(x,1)}"
+                text_2 = f"위쪽 응시중입니다."
             else:
                 text_2 = ""
 
