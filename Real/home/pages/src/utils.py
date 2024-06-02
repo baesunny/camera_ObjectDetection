@@ -1,4 +1,3 @@
-# function to return IoU
 def intersection_over_union(boxA,boxB):
     # xmin, ymin, xmax, ymax of intersection box
     x_min = max(boxA[0],boxB[0])
@@ -15,9 +14,6 @@ def intersection_over_union(boxA,boxB):
     total_area = boxA_area + boxB_area - intersection_area
     IoU = intersection_area/total_area
     return IoU
-
-
-
 
 def make_dict(a):
     dict = {}
