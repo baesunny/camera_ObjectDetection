@@ -16,8 +16,9 @@ def load_image():
     return image_files, manuscripts
 
 
-st.title(":frame_with_picture:Gallery:black_heart:")
+st.title(":frame_with_picture: Gallery :black_heart:")
 images, manuscripts = load_image()
+st.write(":right_anger_bubble: 원하는 사진을 우클릭하여 다운로드하세요!")
 
 view_images = []
 for image in images:
