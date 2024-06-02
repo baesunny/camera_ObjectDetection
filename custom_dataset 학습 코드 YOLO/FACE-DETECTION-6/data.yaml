@@ -1,0 +1,12 @@
+names:
+- FACE
+nc: 1
+test: "C:\\Users\\baseoki\\OneDrive\\\uBC14\uD0D5 \uD654\uBA74\\\uD504\uB85C\uC81D\
+  \uD2B8\\camera_ObjectDetection\\custom_dataset \uD559\uC2B5 \uCF54\uB4DC YOLO\\\
+  FACE-DETECTION-6\\test\\images"
+train: "C:\\Users\\baseoki\\OneDrive\\\uBC14\uD0D5 \uD654\uBA74\\\uD504\uB85C\uC81D\
+  \uD2B8\\camera_ObjectDetection\\custom_dataset \uD559\uC2B5 \uCF54\uB4DC YOLO\\\
+  FACE-DETECTION-6\\train\\images"
+val: "C:\\Users\\baseoki\\OneDrive\\\uBC14\uD0D5 \uD654\uBA74\\\uD504\uB85C\uC81D\uD2B8\
+  \\camera_ObjectDetection\\custom_dataset \uD559\uC2B5 \uCF54\uB4DC YOLO\\FACE-DETECTION-6\\\
+  valid\\images"
