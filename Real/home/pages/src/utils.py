@@ -43,8 +43,7 @@ def make_dict(a):
                 dict[(i,j)] = sorted(li)
     return dict
 
-def iou_multiple(boxesA, boxesB):
-    view_threshold = 3
+def iou_multiple(boxesA, boxesB, view_threshold=3, t=2):
     possible_idx_dict=make_dict(view_threshold)
     
     iou_total_list = []
@@ -56,7 +55,7 @@ def iou_multiple(boxesA, boxesB):
         lenA, lenB = lenB, lenA
         boxesA, boxesB = boxesB, boxesA
     
-    pct_sum = sum(sublist[-1] for sublist in boxesA) + sum(sublist[-1] for sublist in boxesB)
+    t_scaled_pct_sum = sum((sublist[-1])**(1/t) for sublist in boxesA) + sum((sublist[-1])**(1/t) for sublist in boxesB)
     
     for i in possible_idx_dict[(lenA, lenB)]:
         iou_list=[]
@@ -85,8 +84,37 @@ def iou_multiple(boxesA, boxesB):
     
     weighted_iou = 0
     for iou, pct in iouA:
-        weighted_iou += pct/pct_sum*iou
+        weighted_iou += (pct)**(1/t)/t_scaled_pct_sum*iou
     for iou, pct in iouB:
-        weighted_iou += pct/pct_sum*iou
+        weighted_iou += (pct)**(1/t)/t_scaled_pct_sum*iou
     # return max(iou_total_list), weighted_iou
     return weighted_iou
+
+import cv2
+import time
+import albumentations as A
+
+# def to improve frame
+def improve_frame(frame):
+    transform = A.Compose([
+        A.CLAHE(clip_limit=4.0, p=1),
+    ])
+    filtered_frame = transform(image = frame)['image']
+    return filtered_frame
+
+# Display grid on frame
+def showGrid(frame):
+    gridColor = (255,255,255)
+    gridThickness = 1
+    width, height = 1280, 720
+    for x in range(1, 3):
+        cv2.line(frame, (x*width // 3, 0), (x*width // 3, height), gridColor, gridThickness)
+    for y in range(1, 3):
+        cv2.line(frame, (0, y*height // 3), (width, y*height//3), gridColor, gridThickness)  
+
+# Save image to gallery
+def save_image(frame):
+    current_time = time.strftime("%H-%M-%S", time.localtime())
+    file_name = f"image-{current_time}.png"
+    file_path = f"./gallery/{file_name}"
+    cv2.imwrite(file_path, cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))

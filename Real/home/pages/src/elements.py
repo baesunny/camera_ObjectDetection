@@ -9,12 +9,19 @@ def detect(xmin,ymin,xmax,ymax,frame):
     loc = localdic[int(x_center/frame.shape[1]*3)+3*int(y_center/frame.shape[0]*3)]
     return pct,loc
 
+def box_to_pct(boxes, width, height):
+    pct = []
+    for box in boxes:
+        xmin, ymin, xmax, ymax = map(int, box)
+        pct.append((xmax-xmin)*(ymax-ymin)/(width*height)*100)
+    return pct
+
 import cv2
-import mediapipe as mp
 import numpy as np
 
 def head_Pose(image, face_mesh):
     global text
+    global say
     image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
     image.flags.writeable = False
     results = face_mesh.process(image)
@@ -68,29 +75,26 @@ def head_Pose(image, face_mesh):
 
             # See where the user's head tilting
             if y < -5:
-                #text_1 = f"looking left {round(y,1)}"
-                text_1 = f"왼쪽 응시중입니다."
+                text_1 = f"looking left {round(y,1)}"
+                say_1 = f"왼쪽 응시중입니다."
             elif y > 5:
-                #text_1 = f"looking right {round(y,1)}"
-                text_1 = f"오른쪽 응시중입니다."
+                text_1 = f"looking right {round(y,1)}"
+                say_1 = f"오른쪽 응시중입니다."
             else:
-                text_1 = f"정면 응시중입니다."
+                text_1 = "looking forward"
+                say_1 = "정면 응시중입니다."
 
             if x < -3.5:
-                #text_2 = f"looking down {round(x,1)}"
-                text_2 = f"아래쪽 응시중입니다."
+                text_2 = f"looking down {round(x,1)}"
+                say_2 = f"아래쪽 응시중입니다."
             elif x > 4:
-                #text_2 = f"looking up {round(x,1)}"
-                text_2 = f"위쪽 응시중입니다."
+                text_2 = f"looking up {round(x,1)}"
+                say_2 = f"위쪽 응시중입니다."
             else:
                 text_2 = ""
+                say_2 = ""
 
             text = text_1 + " " + text_2
-    return text
+            say = say_1 + " " + say_2
+    return text, say
 
-def box_to_pct(boxes, width, height):
-    pct = []
-    for box in boxes:
-        xmin, ymin, xmax, ymax = map(int, box)
-        pct.append((xmax-xmin)*(ymax-ymin)/(width*height)*100)
-    return pct
