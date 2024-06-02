@@ -1,5 +1,5 @@
 # 요소1[pct] & 요소2[loc]
-def face_detect(xmin,ymin,xmax,ymax,frame):
+def detect(xmin,ymin,xmax,ymax,frame):
     # 요소1[pct]
     bbox = (xmax-xmin)*(ymax-ymin)
     pct = round(100 * bbox / (frame.shape[0]*frame.shape[1]))
@@ -19,15 +19,17 @@ import numpy as np
 
 def head_Pose(image, face_mesh):
     global text
-    image = cv2.flip(image, 1)
+    image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
     image.flags.writeable = False
     results = face_mesh.process(image)
     image.flags.writeable = True
+    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     
     img_h, img_w = image.shape[0], image.shape[1]
     face_3d = []
     face_2d = []
-    text = "no face detected"
+
+    text = "No face detected"
     if results.multi_face_landmarks:
         for face_landmarks in results.multi_face_landmarks:
             for idx, lm in enumerate(face_landmarks.landmark):
@@ -74,15 +76,21 @@ def head_Pose(image, face_mesh):
             elif y > 5:
                 text_1 = f"looking right {round(y,1)}"
             else:
-                text_1 = f"looking forward."
+                text_1 = f"looking forward"
 
             if x < -3:
                 text_2 = f"looking down {round(x,1)}"
             elif x > 5:
                 text_2 = f"looking up {round(x,1)}"
             else:
-                text_2 = " "
+                text_2 = ""
 
-            text = text_1 + text_2
+            text = text_1 + " " + text_2
     return text
 
+def box_to_pct(boxes, width, height):
+    pct = []
+    for box in boxes:
+        xmin, ymin, xmax, ymax = map(int, box)
+        pct.append((xmax-xmin)*(ymax-ymin)/(width*height)*100)
+    return pct
