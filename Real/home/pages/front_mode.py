@@ -15,8 +15,9 @@ from pages.src.elements import detect, head_Pose
 import pyttsx3
 import threading
 torch.cuda.empty_cache()
-engine = pyttsx3.init()
+
 def speak(text):
+    engine = pyttsx3.init()
     engine.say(text)
     engine.runAndWait()
 
