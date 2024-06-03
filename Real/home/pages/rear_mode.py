@@ -13,8 +13,9 @@ from pages.src.elements import detect, box_to_pct
 import pyttsx3
 import threading
 torch.cuda.empty_cache()
-engine = pyttsx3.init()
+
 def speak(text):
+    engine = pyttsx3.init()
     engine.say(text)
     engine.runAndWait()
 
@@ -110,8 +111,8 @@ def main():
                 box, conf, label, pct = detections[0]
                 xmin, ymin, xmax, ymax = map(int, box)
                 label_name = class_list[int(label)]
-                cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), GREEN, 2)
-                cv2.putText(frame, f"{label_name} {conf:.2f}", (xmin, ymin - 10), cv2.FONT_ITALIC, 1, WHITE, 2)
+                #cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), GREEN, 2)
+                #cv2.putText(frame, f"{label_name} {conf:.2f}", (xmin, ymin - 10), cv2.FONT_ITALIC, 1, WHITE, 2)
            
                 if iou < iou_threshold:
                     last_change_time = time.time()
@@ -144,8 +145,8 @@ def main():
                     xmin, ymin, xmax, ymax = map(int, box)
                     label_name = class_list[int(label)]
                     
-                    cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), GREEN, 2)
-                    cv2.putText(frame, f"{label_name} {conf:.2f}", (xmin, ymin - 10), cv2.FONT_ITALIC, 1, WHITE, 2)
+                    #cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), GREEN, 2)
+                    #cv2.putText(frame, f"{label_name} {conf:.2f}", (xmin, ymin - 10), cv2.FONT_ITALIC, 1, WHITE, 2)
                 
                 if iou < iou_threshold:
                     last_change_time = time.time()
@@ -176,7 +177,14 @@ def main():
         if new_bboxes and num_frame % box_threshold == 0:
             if not (change_variable == 1 and state_loc_variable == 0):
                 last_bboxes = new_bboxes
-            
+
+        for j in detections:
+            box, conf, label, pct = j
+            xmin, ymin, xmax, ymax = map(int, box)
+            label_name = class_list[int(label)]
+                    
+            cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), GREEN, 2)
+            cv2.putText(frame, f"{label_name} {conf:.2f}", (xmin, ymin - 10), cv2.FONT_ITALIC, 1, WHITE, 2)   
         
         # fps calculation
         end = time.time()
@@ -194,7 +202,7 @@ def main():
         # capture 기능
         if capture_button and not st.session_state.capture_button_pressed:
             st.session_state.capture_button_pressed = True
-            save_image(frame=frame)
+            save_image(frame)
 
             st.session_state.image_captured=True
             capture_button=False
@@ -207,8 +215,6 @@ def main():
         if cv2.waitKey(1) == ord("q"):
             break
 
-    cap.release()
-    cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
