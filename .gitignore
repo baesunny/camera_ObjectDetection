@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Model outputs
+runs/
+*.log
+
+# Captured images
+captured_image.png
+
+# Large optional weights (keep yolov8s.pt tracked)
+models/face_best.pt
+models/train*.pt

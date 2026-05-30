@@ -1,0 +1,20 @@
+# Core
+python>=3.8
+torch>=1.8
+torchvision>=0.9
+ultralytics>=8.0.0
+opencv-python>=4.5
+mediapipe==0.10.10
+numpy>=1.21
+
+# Preprocessing & metrics
+albumentations>=1.3
+scikit-learn>=1.0
+
+# Voice guidance
+pyttsx3>=2.90
+
+# Web UI (optional)
+streamlit>=1.20
+streamlit-webrtc>=0.47
+Pillow>=9.0
